@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodShare Network | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8bc34a;
+            --primary-dark: #689f38;
+            --primary-light: #c5e1a5;
+            --accent: #ff9800;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --background: linear-gradient(135deg, #1a2f1a 0%, #2d5a2d 100%);
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-food {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.7;
+            z-index: -1;
+            animation: floatFood 20s infinite linear;
+        }
+
+        @keyframes floatFood {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(139, 195, 74, 0.5);
+            background: linear-gradient(to right, #8bc34a, #c5e1a5, #8bc34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 0% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .logo p {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            letter-spacing: 3px;
+            margin-top: 0.5rem;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--card-border);
+            animation: slideUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #8bc34a, #4caf50, #2e7d32, #8bc34a);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .tab.active {
+            color: var(--primary);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+            animation: tabUnderline 0.5s ease;
+        }
+
+        @keyframes tabUnderline {
+            0% {
+                transform: scaleX(0);
+            }
+            100% {
+                transform: scaleX(1);
+            }
+        }
+
+        .form-container {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .form {
+            position: absolute;
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .signin-form {
+            transform: translateX(0);
+        }
+
+        .signup-form {
+            transform: translateX(100%);
+        }
+
+        .form.active {
+            transform: translateX(0);
+        }
+
+        .form.hidden {
+            transform: translateX(-100%);
+        }
+
+        .role-selection {
+            margin-bottom: 2rem;
+        }
+
+        .role-selection h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .role-options {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .role-option {
+            flex: 1;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .role-option.selected {
+            border-color: var(--primary);
+            background: rgba(139, 195, 74, 0.1);
+            box-shadow: 0 5px 15px rgba(139, 195, 74, 0.2);
+        }
+
+        .role-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .role-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1.2rem 1rem 1.2rem 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .input-group input:focus + i {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        .input-group input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember input {
+            margin-right: 0.5rem;
+            accent-color: var(--primary);
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .forgot-password::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-light);
+        }
+
+        .forgot-password:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(-2px);
+        }
+
+        .btn::after {
+            content: "";
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+            border-radius: 12px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            transition: all 0.4s;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .btn:hover::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+        }
+
+        .btn .btn-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn .btn-icon {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover .btn-icon {
+            transform: translateX(5px);
+        }
+
+        .account-prompt {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1rem;
+        }
+
+        .account-prompt a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .account-prompt a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .account-prompt a:hover {
+            color: var(--primary-light);
+        }
+
+        .account-prompt a:hover::after {
+            width: 100%;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .social-login p {
+            margin-bottom: 1rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .social-login p::before, .social-login p::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: var(--card-border);
+        }
+
+        .social-login p::before {
+            left: 0;
+        }
+
+        .social-login p::after {
+            right: 0;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--card-border);
+        }
+
+        .social-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .dashboard.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .dashboard-logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #8bc34a, #c5e1a5, #8bc34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .user-role {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.2rem;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dashboard-content {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .welcome-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #8bc34a, #c5e1a5, #8bc34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .action-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .action-card p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Success Animation Styles */
+        .success-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .success-animation.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-content {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 4rem;
+            border-radius: 25px;
+            max-width: 700px;
+            transform: scale(0.8);
+            transition: transform 0.5s ease;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-animation.active .success-content {
+            transform: scale(1);
+        }
+
+        .success-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #8bc34a, #4caf50, #2e7d32, #8bc34a);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .success-icon {
+            font-size: 6rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite, rotate 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(139, 195, 74, 0.5);
+            }
+            50% {
+                transform: scale(1.1);
+                text-shadow: 0 0 20px rgba(139, 195, 74, 0.8);
+            }
+            100% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(139, 195, 74, 0.5);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(5deg);
+            }
+            75% {
+                transform: rotate(-5deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .success-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #8bc34a, #c5e1a5, #8bc34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 3s infinite linear;
+        }
+
+        .success-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .continue-btn {
+            padding: 1.2rem 2.5rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .continue-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .food-icons {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: bounce 3s infinite;
+            z-index: -1;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .stat {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 2rem;
+            }
+            
+            .logo h1 {
+                font-size: 2.8rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+            }
+            
+            .role-options {
+                flex-direction: column;
+            }
+            
+            .success-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .success-content h2 {
+                font-size: 2.2rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .welcome-section h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation" id="particles"></div>
+    
+    <!-- Login Section -->
+    <div class="container" id="login-container">
+        <div class="logo">
+            <h1>FoodShare Network</h1>
+            <p>Redistributing Food, Nourishing Communities</p>
+        </div>
+        
+        <div class="login-card">
+            <div class="tabs">
+                <div class="tab active" id="signin-tab">Sign In</div>
+                <div class="tab" id="signup-tab">Sign Up</div>
+            </div>
+            
+            <div class="form-container">
+                <form class="form signin-form active" id="signin-form">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    <div class="options">
+                        <label class="remember">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn">
+                        <span class="btn-text">Sign In</span>
+                        <i class="fas fa-arrow-right btn-icon"></i>
+                    </button>
+                    
+                    <div class="account-prompt">
+                        Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a>
+                    </div>
+                    
+                    <div class="social-login">
+                        <p>Or sign in with</p>
+                        <div class="social-icons">
+                            <div class="social-icon">
+                                <i class="fab fa-google"></i>
+                            </div>
+                            <div class="social-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </div>
+                            <div class="social-icon">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <form class="form signup-form" id="signup-form">
+                    <div class="role-selection">
+                        <h3>Choose Your Role</h3>
+                        <div class="role-options">
+                            <div class="role-option" data-role="seeker">
+                                <div class="role-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <div class="role-name">Food Seeker</div>
+                                <div class="role-desc">Find food assistance</div>
+                            </div>
+                            <div class="role-option" data-role="donor">
+                                <div class="role-icon">
+                                    <i class="fas fa-hand-holding-heart"></i>
+                                </div>
+                                <div class="role-name">Food Donor</div>
+                                <div class="role-desc">Share surplus food</div>
+                            </div>
+                            <div class="role-option" data-role="volunteer">
+                                <div class="role-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="role-name">Volunteer</div>
+                                <div class="role-desc">Help distribute food</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Full Name" required id="full-name">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" placeholder="Email" required id="email">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Password" required id="password">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Confirm Password" required id="confirm-password">
+                    </div>
+                    <div class="options">
+                        <label class="remember">
+                            <input type="checkbox" id="terms"> I agree to the Terms & Conditions
+                        </label>
+                    </div>
+                    <button type="submit" class="btn">
+                        <span class="btn-text">Sign Up</span>
+                        <i class="fas fa-user-plus btn-icon"></i>
+                    </button>
+                    
+                    <div class="account-prompt">
+                        Already have an account? <a href="#" id="switch-to-signin">Sign In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-number" id="meals-saved">0</span>
+                <span class="stat-label">Meals Saved</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="food-donated">0</span>
+                <span class="stat-label">Food Donated (lbs)</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="communities">0</span>
+                <span class="stat-label">Communities Served</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Animation -->
+    <div class="success-animation" id="success-animation">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Welcome to FoodShare!</h2>
+            <p>Thank you for joining our mission to reduce food waste and nourish communities. Together we can make a difference!</p>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">127K</span>
+                    <span class="stat-label">Meals Saved</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">42K</span>
+                    <span class="stat-label">Food Donated (lbs)</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label">Communities Served</span>
+                </div>
+            </div>
+            
+            <button class="continue-btn" id="continue-btn">Continue to Dashboard</button>
+        </div>
+    </div>
+    
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <div class="dashboard-logo">
+                <h1>FoodShare Network</h1>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <div id="user-name">User Name</div>
+                    <div id="user-role" class="user-role">Food Seeker</div>
+                </div>
+                <button class="logout-btn" id="logout-btn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="welcome-section">
+                <h2>Welcome to Your Dashboard!</h2>
+                <p id="welcome-message">You're now part of a community dedicated to reducing food waste and helping those in need. Explore the tools below to get started.</p>
+                <div id="role-badge" class="role-badge">Food Seeker</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3>127,482</h3>
+                    <p>Meals Saved</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-apple-alt"></i>
+                    <h3>42,156</h3>
+                    <p>Food Donated (lbs)</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3>156</h3>
+                    <p>Communities Served</p>
+                </div>
+            </div>
+            
+            <div class="actions-grid" id="role-actions">
+                <!-- Role-specific actions will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create background particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 5px and 20px
+                const size = Math.random() * 15 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation delay and duration
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Create floating food icons
+        function createFloatingFood() {
+            const foodIcons = ['🥕', '🍎', '🥖', '🍊', '🥦', '🍞', '🍇', '🥬', '🍋', '🥔', '🌽', '🍓'];
+            const body = document.body;
+            
+            for (let i = 0; i < 20; i++) {
+                const food = document.createElement('div');
+                food.classList.add('floating-food');
+                food.textContent = foodIcons[Math.floor(Math.random() * foodIcons.length)];
+                
+                // Random position
+                food.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation delay and duration
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 15 + 20;
+                food.style.animationDelay = `${delay}s`;
+                food.style.animationDuration = `${duration}s`;
+                
+                body.appendChild(food);
+            }
+        }
+        
+        // Role selection functionality
+        let selectedRole = 'seeker'; // Default role
+        
+        document.querySelectorAll('.role-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                document.querySelectorAll('.role-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Store selected role
+                selectedRole = this.getAttribute('data-role');
+            });
+        });
+        
+        // Set default selected role
+        document.querySelector('.role-option[data-role="seeker"]').classList.add('selected');
+        
+        // Tab switching functionality
+        document.getElementById('signin-tab').addEventListener('click', function() {
+            switchToSignIn();
+        });
+        
+        document.getElementById('signup-tab').addEventListener('click', function() {
+            switchToSignUp();
+        });
+        
+        document.getElementById('switch-to-signup').addEventListener('click', function(e) {
+            e.preventDefault();
+            switchToSignUp();
+        });
+        
+        document.getElementById('switch-to-signin').addEventListener('click', function(e) {
+            e.preventDefault();
+            switchToSignIn();
+        });
+        
+        function switchToSignIn() {
+            document.getElementById('signin-tab').classList.add('active');
+            document.getElementById('signup-tab').classList.remove('active');
+            document.getElementById('signin-form').classList.add('active');
+            document.getElementById('signup-form').classList.remove('active');
+            document.getElementById('signin-form').classList.remove('hidden');
+            document.getElementById('signup-form').classList.add('hidden');
+        }
+        
+        function switchToSignUp() {
+            document.getElementById('signup-tab').classList.add('active');
+            document.getElementById('signin-tab').classList.remove('active');
+            document.getElementById('signup-form').classList.add('active');
+            document.getElementById('signin-form').classList.remove('active');
+            document.getElementById('signup-form').classList.remove('hidden');
+            document.getElementById('signin-form').classList.add('hidden');
+        }
+        
+        // Form submission
+        document.getElementById('signin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showSuccessAnimation();
+        });
+        
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('full-name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Simple validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (!terms) {
+                alert('Please agree to the Terms & Conditions');
+                return;
+            }
+            
+            // Store user data
+            localStorage.setItem('userName', fullName);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userRole', selectedRole);
+            
+            showSuccessAnimation();
+        });
+        
+        // Success animation
+        function showSuccessAnimation() {
+            document.getElementById('success-animation').classList.add('active');
+            
+            // Create floating food icons in success animation
+            const foodIcons = ['🥕', '🍎', '🥖', '🍊', '🥦', '🍞', '🍇', '🥬', '🍋', '🥔', '🌽', '🍓'];
+            const animationContainer = document.getElementById('success-animation');
+            
+            for (let i = 0; i < 25; i++) {
+                const foodIcon = document.createElement('div');
+                foodIcon.classList.add('food-icons');
+                foodIcon.textContent = foodIcons[Math.floor(Math.random() * foodIcons.length)];
+                
+                // Random position
+                foodIcon.style.left = `${Math.random() * 100}%`;
+                foodIcon.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                foodIcon.style.animationDelay = `${Math.random() * 2}s`;
+                
+                animationContainer.appendChild(foodIcon);
+            }
+            
+            // Animate stats
+            animateStats();
+        }
+        
+        // Continue to dashboard
+        document.getElementById('continue-btn').addEventListener('click', function() {
+            document.getElementById('success-animation').classList.remove('active');
+            
+            // Remove food icons
+            const foodIcons = document.querySelectorAll('.food-icons');
+            foodIcons.forEach(icon => icon.remove());
+            
+            // Show dashboard
+            showDashboard();
+        });
+        
+        // Show dashboard
+        function showDashboard() {
+            // Set user info
+            const userName = localStorage.getItem('userName') || 'FoodShare User';
+            const userEmail = localStorage.getItem('userEmail') || 'user@foodshare.org';
+            const userRole = localStorage.getItem('userRole') || 'seeker';
+            
+            document.getElementById('user-name').textContent = userName;
+            document.getElementById('user-role').textContent = getRoleDisplayName(userRole);
+            document.getElementById('role-badge').textContent = getRoleDisplayName(userRole);
+            
+            // Set role-specific welcome message
+            setRoleWelcomeMessage(userRole);
+            
+            // Set role-specific actions
+            setRoleActions(userRole);
+            
+            // Hide login and show dashboard
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+        }
+        
+        // Get display name for role
+        function getRoleDisplayName(role) {
+            switch(role) {
+                case 'seeker': return 'Food Seeker';
+                case 'donor': return 'Food Donor';
+                case 'volunteer': return 'Volunteer';
+                default: return 'Community Member';
+            }
+        }
+        
+        // Set role-specific welcome message
+        function setRoleWelcomeMessage(role) {
+            const welcomeMessage = document.getElementById('welcome-message');
+            
+            switch(role) {
+                case 'seeker':
+                    welcomeMessage.textContent = 'Welcome! Find food assistance in your community and access nutritious meals through our network.';
+                    break;
+                case 'donor':
+                    welcomeMessage.textContent = 'Thank you for helping reduce food waste! Share surplus food from your home or business with those in need.';
+                    break;
+                case 'volunteer':
+                    welcomeMessage.textContent = 'Join our network of volunteers helping to redistribute food and support communities in need.';
+                    break;
+                default:
+                    welcomeMessage.textContent = 'You\'re now part of a community dedicated to reducing food waste and helping those in need.';
+            }
+        }
+        
+        // Set role-specific actions
+        function setRoleActions(role) {
+            const actionsGrid = document.getElementById('role-actions');
+            let actionsHTML = '';
+            
+            switch(role) {
+                case 'seeker':
+                    actionsHTML = `
+                        <div class="action-card">
+                            <h3>Find Food Nearby</h3>
+                            <p>Locate community fridges, food pantries, and distribution centers in your area.</p>
+                            <button class="action-btn">Search Locations</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Request Assistance</h3>
+                            <p>Submit a request for food assistance and get connected with available resources.</p>
+                            <button class="action-btn">Get Help</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Food Availability</h3>
+                            <p>Check real-time updates on available food items at distribution centers.</p>
+                            <button class="action-btn">View Availability</button>
+                        </div>
+                    `;
+                    break;
+                case 'donor':
+                    actionsHTML = `
+                        <div class="action-card">
+                            <h3>Schedule a Donation</h3>
+                            <p>Arrange to donate surplus food from your home, restaurant, or business.</p>
+                            <button class="action-btn">Donate Now</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Donation History</h3>
+                            <p>Track your previous donations and see the impact you've made.</p>
+                            <button class="action-btn">View History</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Food Safety Guidelines</h3>
+                            <p>Learn about proper food handling and safety standards for donations.</p>
+                            <button class="action-btn">Learn More</button>
+                        </div>
+                    `;
+                    break;
+                case 'volunteer':
+                    actionsHTML = `
+                        <div class="action-card">
+                            <h3>Available Shifts</h3>
+                            <p>Browse and sign up for volunteer opportunities in your community.</p>
+                            <button class="action-btn">Find Shifts</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Training Resources</h3>
+                            <p>Access training materials and guidelines for food handling and distribution.</p>
+                            <button class="action-btn">Get Trained</button>
+                        </div>
+                        <div class="action-card">
+                            <h3>Volunteer Impact</h3>
+                            <p>See how your volunteer hours are making a difference in the community.</p>
+                            <button class="action-btn">View Impact</button>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            actionsGrid.innerHTML = actionsHTML;
+        }
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('login-container').style.display = 'flex';
+            switchToSignIn();
+        });
+        
+        // Animate the stats on the main page
+        function animateStats() {
+            const mealsSaved = document.getElementById('meals-saved');
+            const foodDonated = document.getElementById('food-donated');
+            const communities = document.getElementById('communities');
+            
+            animateValue(mealsSaved, 0, 127482, 2000);
+            animateValue(foodDonated, 0, 42156, 2000);
+            animateValue(communities, 0, 156, 1500);
+        }
+        
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = value.toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        // Initialize
+        createParticles();
+        createFloatingFood();
+        animateStats();
+    </script>
+</body>
+</html>
